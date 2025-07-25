@@ -10,17 +10,6 @@ jobs:
   build-test:
     runs-on: ubuntu-latest
 
-    services:
-      web:
-        image: python:3.9
-        ports:
-          - 5000:5000
-        options: >-
-          --health-cmd "curl --fail http://localhost:5000 || exit 1"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -46,9 +35,8 @@ jobs:
 
       - name: UI Test Over HTTP
         run: |
-          python -c "
-import requests
+          echo "import requests
 res = requests.post('http://localhost:5000', data={'term': '<script>alert(1)</script>'})
 assert res.status_code == 200
-assert 'script' not in res.text
-"
+assert 'script' not in res.text" > test_http.py
+          python test_http.py
