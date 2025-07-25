@@ -17,19 +17,20 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: 3.9
+          python-version: '3.9'
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '18'
 
-      - name: Install Python & Node.js dependencies
+      - name: Install Python dependencies
         run: |
           pip install -r requirements.txt
-          pip install requests safety
-          npm install
-          npm install eslint @microsoft/eslint-formatter-sarif eslint-plugin-security
+          pip install safety
+
+      - name: Install Node.js dependencies
+        run: npm install
 
       - name: Run Dependency Security Check
         run: safety check || true
@@ -46,7 +47,7 @@ jobs:
       - name: Run ESLint with SARIF Output
         run: |
           mkdir -p reports
-          npx eslint . --format @microsoft/eslint-formatter-sarif --output-file reports/eslint-results.sarif
+          npm run lint
 
       - name: Upload SARIF to GitHub Code Scanning
         uses: github/codeql-action/upload-sarif@v2
