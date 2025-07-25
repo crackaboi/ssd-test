@@ -35,8 +35,10 @@ jobs:
 
       - name: UI Test Over HTTP
         run: |
-          echo "import requests
+          cat <<EOF > test_http.py
+import requests
 res = requests.post('http://localhost:5000', data={'term': '<script>alert(1)</script>'})
 assert res.status_code == 200
-assert 'script' not in res.text" > test_http.py
+assert '<script>' not in res.text
+EOF
           python test_http.py
