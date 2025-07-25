@@ -5,7 +5,8 @@
   "type": "module",
   "main": "eslint.config.js",
   "scripts": {
-    "lint": "eslint . --format @microsoft/eslint-formatter-sarif --output-file reports/eslint-results.sarif"
+    "lint": "npx eslint . --format @microsoft/eslint-formatter-sarif --output-file reports/eslint-results.sarif"
+
   },
   "keywords": [],
   "author": "",
