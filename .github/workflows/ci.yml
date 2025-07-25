@@ -17,7 +17,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: 3.9
+          python-version: '3.9'
 
       - name: Install dependencies
         run: |
@@ -34,10 +34,5 @@ jobs:
           sleep 5
 
       - name: UI Test Over HTTP
-        run: |
-          echo "import requests
-response = requests.post('http://localhost:5000', data={'term': '<script>alert(1)</script>'})
-assert response.status_code == 200
-assert '<script>' not in response.text
-print('Test passed')" > test_script.py
-          python test_script.py
+        run: >
+          python -c "import requests; res = requests.post('http://localhost:5000', data={'term': '<script>alert(1)</script>'}); assert res.status_code == 200; assert '<script>' not in res.text; print('Test passed')"
