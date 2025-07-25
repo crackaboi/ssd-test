@@ -7,7 +7,7 @@ on:
     branches: [ main, master ]
 
 jobs:
-  build-test:
+  test:
     runs-on: ubuntu-latest
 
     steps:
@@ -23,7 +23,7 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-          pip install safety requests
+          pip install requests safety
 
       - name: Dependency Security Check
         run: safety check || true
@@ -35,7 +35,9 @@ jobs:
 
       - name: UI Test Over HTTP
         run: |
-          python -c "import requests; \
-r = requests.post('http://localhost:5000', data={'term': '<script>alert(1)</script>'}); \
-assert r.status_code == 200; \
-assert '<script>' not in r.text"
+          echo "import requests
+response = requests.post('http://localhost:5000', data={'term': '<script>alert(1)</script>'})
+assert response.status_code == 200
+assert '<script>' not in response.text
+print('Test passed')" > test_script.py
+          python test_script.py
