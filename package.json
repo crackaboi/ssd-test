@@ -1,18 +1,14 @@
 {
   "name": "my-app",
   "version": "1.0.0",
-  "description": "My First Commit",
-  "type": "module",
-  "main": "eslint.config.js",
+  "description": "Simple secure Flask web app with ESLint and CI integration",
   "scripts": {
-    "lint": "npx eslint . --format @microsoft/eslint-formatter-sarif --output-file reports/eslint-results.sarif"
-
+    "lint": "node_modules/.bin/eslint . --format node_modules/@microsoft/eslint-formatter-sarif --output-file reports/eslint-results.sarif"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@eslint/js": "^9.0.0",
     "@microsoft/eslint-formatter-sarif": "^3.1.0",
     "eslint": "^9.31.0",
     "eslint-plugin-security": "^3.0.1"

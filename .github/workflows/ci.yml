@@ -17,22 +17,20 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.9'
+          python-version: 3.9
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '18'
 
-      - name: Install Python dependencies
+      - name: Install Python & Node.js dependencies
         run: |
           pip install -r requirements.txt
-          pip install safety
+          pip install requests safety
+          npm install
 
-      - name: Install Node.js dependencies
-        run: npm install
-
-      - name: Run Dependency Security Check
+      - name: Run Python Dependency Security Check
         run: safety check || true
 
       - name: Start Flask App
@@ -40,14 +38,14 @@ jobs:
           nohup python app.py > flask.log 2>&1 &
           sleep 5
 
-      - name: UI Test Over HTTP
+      - name: UI Test Over HTTP (XSS Prevention)
         run: >
           python -c "import requests; res = requests.post('http://localhost:5000', data={'term': '<script>alert(1)</script>'}); assert res.status_code == 200; assert '<script>' not in res.text"
 
       - name: Run ESLint with SARIF Output
         run: |
           mkdir -p reports
-          npm run lint
+          node_modules/.bin/eslint . --format node_modules/@microsoft/eslint-formatter-sarif --output-file reports/eslint-results.sarif
 
       - name: Upload SARIF to GitHub Code Scanning
         uses: github/codeql-action/upload-sarif@v2
