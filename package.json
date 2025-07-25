@@ -1,15 +1,17 @@
 {
   "name": "my-app",
   "version": "1.0.0",
-  "description": "��#\u0000 \u0000M\u0000y\u0000 \u0000F\u0000i\u0000r\u0000s\u0000t\u0000 \u0000C\u0000o\u0000m\u0000m\u0000i\u0000t\u0000\r\u0000 \u0000",
-  "main": ".eslintrc.js",
+  "description": "My First Commit",
+  "type": "module",
+  "main": "eslint.config.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "lint": "eslint . --format @microsoft/eslint-formatter-sarif --output-file reports/eslint-results.sarif"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@eslint/js": "^9.0.0",
     "@microsoft/eslint-formatter-sarif": "^3.1.0",
     "eslint": "^9.31.0",
     "eslint-plugin-security": "^3.0.1"
